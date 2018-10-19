@@ -1,0 +1,87 @@
+# The following code is for creating single-instance of magento2 Deployment and Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: magento2
+  labels:
+    app: magento2
+spec:
+  ports:
+  - port: 80
+  selector:
+    app: magento2
+    tier: frontend
+  type: NodePort #any service of type NodePort can be accessed over that IP address
+---
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: nginx-config
+data:
+  nginx.conf: |
+    events {
+    }
+    http {
+      server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+
+        # Set nginx to serve files from the shared volume!
+        root /var/www/magento;
+        server_name _;
+        location / {
+          try_files $uri $uri/ =404;
+        }
+        location ~ \.php$ {
+          include fastcgi_params;
+          fastcgi_param REQUEST_METHOD $request_method;
+          fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+          fastcgi_pass 127.0.0.1:9000;
+        }
+      }
+    }
+---
+#This it to deploy magento2 container to Kubernetes
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: magento2
+  labels:
+    app: magento2
+spec:
+  selector:
+    matchLabels:
+      app: magento2
+      tier: frontend
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: magento2
+        tier: frontend
+    spec:
+      containers:
+      - name: magento2
+        image: shiftedreality/magento-docker-components-php:7.1-fpm
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        volumeMounts:
+        - name: code
+          mountPath: /var/www/magento
+      - name: nginx
+        image: nginx:1.7.9
+        volumeMounts:
+        - name: code
+          mountPath: /var/www/magento
+        - name: nginx-config-volume
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+      volumes:
+      - name: code
+        persistentVolumeClaim:
+          claimName: sources-volume-claim
+      - name: nginx-config-volume
+        configMap:
+          name: nginx-config
