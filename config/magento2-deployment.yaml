@@ -27,7 +27,7 @@ data:
         listen [::]:80 default_server;
 
         # Set nginx to serve files from the shared volume!
-        root /var/www/magento;
+        root /var/www/html;
         server_name _;
         location / {
           try_files $uri $uri/ =404;
@@ -63,18 +63,22 @@ spec:
     spec:
       containers:
       - name: magento2
-        image: shiftedreality/magento-docker-components-php:7.1-fpm
+        image: php:7.1-fpm
         imagePullPolicy: Always
         ports:
         - containerPort: 80
         volumeMounts:
         - name: code
-          mountPath: /var/www/magento
+          mountPath: /var/www/html
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "mkdir -p /var/www/html"]
       - name: nginx
         image: nginx:1.7.9
         volumeMounts:
         - name: code
-          mountPath: /var/www/magento
+          mountPath: /var/www/html
         - name: nginx-config-volume
           mountPath: /etc/nginx/nginx.conf
           subPath: nginx.conf

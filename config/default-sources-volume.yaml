@@ -5,7 +5,7 @@ metadata:
   name: default-sources-volume
 spec:
   capacity:
-    storage: 15Gi
+    storage: 1Gi
   accessModes:
   - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
