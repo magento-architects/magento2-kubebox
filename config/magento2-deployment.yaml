@@ -23,29 +23,23 @@ data:
     events {
     }
     http {
+      upstream fastcgi_backend {
+        server 127.0.0.1:9000;
+      }
+
       server {
         listen 80 default_server;
         listen [::]:80 default_server;
 
-        # Set nginx to serve files from the shared volume!
-        root /var/www/html;
         server_name _;
-        index index.php;
 
-        location / {
-          try_files $uri $uri/ =404;
-        }
-        location ~ \.php$ {
-          include fastcgi_params;
-          fastcgi_param REQUEST_METHOD $request_method;
-          fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
-          fastcgi_pass 127.0.0.1:9000;
-        }
+        set $MAGE_ROOT /var/www/html/magento2ce;
+        include /var/www/html/magento2ce/nginx.conf.sample;
       }
     }
 ---
 #This it to deploy magento2 container to Kubernetes
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
   name: magento2
@@ -66,27 +60,28 @@ spec:
     spec:
       containers:
       - name: magento2
-        image: php:7.1-fpm
+        image: shiftedreality/magento-docker-components-php:7.1-fpm
         imagePullPolicy: Always
         ports:
         - containerPort: 80
         volumeMounts:
         - name: code
           mountPath: /var/www/html
-          subPath: magento2
       - name: nginx
-        image: nginx:1.7.9
+        image: nginx:1.9
         volumeMounts:
         - name: code
           mountPath: /var/www/html
-          subPath: nginx
         - name: nginx-config-volume
           mountPath: /etc/nginx/nginx.conf
           subPath: nginx.conf
       volumes:
+#      - name: code
+#        persistentVolumeClaim:
+#          claimName: sources-volume-claim
       - name: code
-        persistentVolumeClaim:
-          claimName: sources-volume-claim
+        hostPath:
+          path: /Users/olehposyniak/www/magento-kubernetes-components/magento
       - name: nginx-config-volume
         configMap:
           name: nginx-config
