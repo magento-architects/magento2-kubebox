@@ -8,6 +8,7 @@ metadata:
 spec:
   ports:
   - port: 80
+    nodePort: 30101
   selector:
     app: magento2
     tier: frontend
@@ -29,6 +30,8 @@ data:
         # Set nginx to serve files from the shared volume!
         root /var/www/html;
         server_name _;
+        index index.php;
+
         location / {
           try_files $uri $uri/ =404;
         }
@@ -70,15 +73,13 @@ spec:
         volumeMounts:
         - name: code
           mountPath: /var/www/html
-        lifecycle:
-          postStart:
-            exec:
-              command: ["/bin/sh", "-c", "mkdir -p /var/www/html"]
+          subPath: magento2
       - name: nginx
         image: nginx:1.7.9
         volumeMounts:
         - name: code
           mountPath: /var/www/html
+          subPath: nginx
         - name: nginx-config-volume
           mountPath: /etc/nginx/nginx.conf
           subPath: nginx.conf
