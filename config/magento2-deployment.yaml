@@ -60,7 +60,7 @@ spec:
     spec:
       containers:
       - name: magento2
-        image: shiftedreality/magento-docker-components-php:7.1-fpm
+        image: shiftedreality/magento-kubernetes-components-php:7.1-fpm
         imagePullPolicy: Always
         ports:
         - containerPort: 80

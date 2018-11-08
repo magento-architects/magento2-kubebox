@@ -11,7 +11,9 @@ RUN apt-get update \
     libxslt1-dev \
     sendmail-bin \
     sendmail \
-    sudo
+    sudo \
+    net-tools \
+    nano
 
 # Configure the gd library
 RUN docker-php-ext-configure \
