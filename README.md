@@ -20,3 +20,9 @@ This should output something like:
 Exports list on 127.0.0.1:
 /Absolute/path/to/sources 192.168.99.100
 ```
+
+## Apply configs
+
+```bash
+kubectl apply -f config/default-sources-volume.yaml -f config/default-sources-volume-claim.yaml -f config/magento2-deployment.yaml
+```
