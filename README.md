@@ -6,6 +6,8 @@ Configure your sources directory as export (/etc/exports) in the NFS server that
 
 NOTE: The Minikube IP can be different after a minikube delete and minikube start command. Make sure that your NFS export contains the correct Minikube IP again.
 
+[More info](http://pietervogelaar.nl/minikube-nfs-mounts)
+
 ### Mac OS X
 echo "$(realpath .)/sources -alldirs -mapall="$(id -u)":"$(id -g)" $(minikube ip)" | sudo tee -a /etc/exports && sudo nfsd restart
 Check if the entry is active by executing on your host machine:
