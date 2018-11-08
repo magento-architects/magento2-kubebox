@@ -76,9 +76,6 @@ spec:
           mountPath: /etc/nginx/nginx.conf
           subPath: nginx.conf
       volumes:
-#      - name: code
-#        persistentVolumeClaim:
-#          claimName: sources-volume-claim
       - name: code
         hostPath:
           path: /Users/olehposyniak/www/magento-kubernetes-components/magento

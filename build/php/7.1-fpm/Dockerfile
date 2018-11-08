@@ -34,4 +34,7 @@ RUN docker-php-ext-install \
 
 RUN pecl install -o -f xdebug
 
+COPY etc/php-fpm.ini /usr/local/etc/php/conf.d/zz-magento.ini
+COPY etc/php-fpm.conf /usr/local/etc/
+
 CMD ["php-fpm", "-R"]
