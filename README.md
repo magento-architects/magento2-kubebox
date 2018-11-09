@@ -35,7 +35,7 @@ To install Magento, use next variables:
 
 | Name | Value|
 | --- | --- |
-| DB Host | `magento2-mysql` |
+| DB host | `magento2-mysql` |
 | DB user | `root` |
 | DB password | `1234` |
 | DB name | `mysql` |
