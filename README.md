@@ -28,3 +28,14 @@ Exports list on 127.0.0.1:
 ```bash
 kubectl apply -f config/default-sources-volume.yaml -f config/default-sources-volume-claim.yaml -f config/magento2-deployment.yaml
 ```
+
+## Installation
+
+To install Magento, use next variables:
+
+| Name | Value|
+| --- | --- |
+| DB Host | `magento2-mysql` |
+| DB user | `root` |
+| DB password | `1234` |
+| DB name | `mysql` |
