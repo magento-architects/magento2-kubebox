@@ -21,8 +21,15 @@ metadata:
 data:
   nginx.conf: |
     events {
+      worker_connections 1024;
     }
+
     http {
+      include mime.types;
+      default_type application/octet-stream;
+      sendfile on;
+      keepalive_timeout 65;
+
       upstream fastcgi_backend {
         server 127.0.0.1:9000;
       }
