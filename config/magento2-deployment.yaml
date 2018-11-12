@@ -84,8 +84,11 @@ spec:
           subPath: nginx.conf
       volumes:
       - name: code
-        hostPath:
-          path: /Users/olehposyniak/www/magento-kubernetes-components/magento
+        persistentVolumeClaim:
+          claimName: sources-volume-claim
+#      - name: code
+#        hostPath:
+#          path: /Users/olehposyniak/www/magento-kubernetes-components/magento
       - name: nginx-config-volume
         configMap:
           name: nginx-config
