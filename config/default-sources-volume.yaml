@@ -5,7 +5,7 @@ metadata:
   name: default-sources-volume
 spec:
   capacity:
-    storage: 1Gi
+    storage: 2Gi
   accessModes:
   - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
@@ -16,4 +16,4 @@ spec:
     # but the IP address of the `minikube ip` command. You will need to
     # grant access to the `minikube ip` IP address.
     server: 192.168.99.1
-    path: '/Users/olehposyniak/www/magento-kubernetes-components/magento'
+    path: {{PWD}}/magento

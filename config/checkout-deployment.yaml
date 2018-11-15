@@ -2,34 +2,27 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: magento2
+  name: magento2-checkout
   labels:
-    app: magento2
+    app: magento2-checkout
 spec:
   ports:
   - port: 80
-    nodePort: 30101
+    nodePort: 30102
   selector:
-    app: magento2
+    app: magento2-checkout
     tier: frontend
   type: NodePort #any service of type NodePort can be accessed over that IP address
 ---
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: nginx-config
+  name: nginx-config-checkout
 data:
   nginx.conf: |
     events {
-      worker_connections 1024;
     }
-
     http {
-      include mime.types;
-      default_type application/octet-stream;
-      sendfile on;
-      keepalive_timeout 65;
-
       upstream fastcgi_backend {
         server 127.0.0.1:9000;
       }
@@ -40,9 +33,9 @@ data:
 
         server_name _;
 
-        location /magento2/ {
-            set $MAGE_ROOT /var/www/html/magento2ce;
-            include /var/www/html/magento2ce/nginx.conf.sample;
+        location /checkout/ {
+          set $MAGE_ROOT /var/www/html/magento2checkout;
+          include /var/www/html/magento2checkout/nginx.conf.sample;
         }
       }
     }
@@ -51,24 +44,24 @@ data:
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
-  name: magento2
+  name: magento2-checkout
   labels:
-    app: magento2
+    app: magento2-checkout
 spec:
   selector:
     matchLabels:
-      app: magento2
+      app: magento2-checkout
       tier: frontend
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: magento2
+        app: magento2-checkout
         tier: frontend
     spec:
       containers:
-      - name: magento2
+      - name: magento2-checkout
         image: shiftedreality/magento-kubernetes-components-php:7.1-fpm
         imagePullPolicy: Always
         ports:
@@ -81,16 +74,13 @@ spec:
         volumeMounts:
         - name: code
           mountPath: /var/www/html
-        - name: nginx-config-volume
+        - name: nginx-config-checkout-volume
           mountPath: /etc/nginx/nginx.conf
           subPath: nginx.conf
       volumes:
-#      - name: code
-#        persistentVolumeClaim:
-#          claimName: sources-volume-claim
       - name: code
         hostPath:
           path: {{PWD}}/magento
-      - name: nginx-config-volume
+      - name: nginx-config-checkout-volume
         configMap:
-          name: nginx-config
+          name: nginx-config-checkout
