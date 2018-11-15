@@ -16,6 +16,10 @@ NOTE: The Minikube IP can be different after a minikube delete and minikube star
 [More info](http://pietervogelaar.nl/minikube-nfs-mounts)
 
 ### Mac OS X
+If you do not have python, install it using brew:
+```bash
+brew install python
+```
 echo "$(python -c 'import os,sys;print os.path.realpath(".")')/magento -alldirs -mapall="$(id -u)":"$(id -g)" $(minikube ip)" | sudo tee -a /etc/exports && sudo nfsd restart
 Check if the entry is active by executing on your host machine:
 
