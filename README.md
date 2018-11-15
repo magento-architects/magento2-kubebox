@@ -42,3 +42,14 @@ python local_deploy.py --all --ingress
 
 If you use ingress with same url but different subpath, 
 Bash into pod and install magento via cli to set base urls.
+
+## Installation
+
+To install Magento, use next variables:
+
+| Name | Value|
+| --- | --- |
+| DB host | `magento2-mysql` |
+| DB user | `root` |
+| DB password | `1234` |
+| DB name | `mysql` |
