@@ -32,11 +32,13 @@ RUN docker-php-ext-install \
   bcmath \
   soap
 
+ENV MAGENTO_ROOT /var/www/html
+
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 RUN pecl install -o -f xdebug
 
+COPY etc/php-xdebug.ini /usr/local/etc/php/conf.d/zz-xdebug-settings.ini
 COPY etc/php-fpm.ini /usr/local/etc/php/conf.d/zz-magento.ini
-COPY etc/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 COPY etc/php-fpm.conf /usr/local/etc/
 
 CMD ["php-fpm", "-R"]
