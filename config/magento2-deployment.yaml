@@ -39,11 +39,8 @@ data:
         listen [::]:80 default_server;
 
         server_name _;
-
-        location /magento2/ {
-            set $MAGE_ROOT /var/www/html/magento2ce;
-            include /var/www/html/magento2ce/nginx.conf.sample;
-        }
+        set $MAGE_ROOT /var/www/html/magento;
+        include /var/www/html/magento/nginx.conf.sample;
       }
     }
 ---
@@ -90,7 +87,7 @@ spec:
 #          claimName: sources-volume-claim
       - name: code
         hostPath:
-          path: {{PWD}}/magento
+          path: {{PWD}}/sources
       - name: nginx-config-volume
         configMap:
           name: nginx-config
