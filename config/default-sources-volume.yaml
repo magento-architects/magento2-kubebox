@@ -16,4 +16,4 @@ spec:
     # but the IP address of the `minikube ip` command. You will need to
     # grant access to the `minikube ip` IP address.
     server: 192.168.99.1
-    path: {{PWD}}/magento
+    path: {{PWD}}/sources

@@ -33,10 +33,8 @@ data:
 
         server_name _;
 
-        location /checkout/ {
-          set $MAGE_ROOT /var/www/html/magento2checkout;
-          include /var/www/html/magento2checkout/nginx.conf.sample;
-        }
+        set $MAGE_ROOT /var/www/html/checkout;
+        include /var/www/html/checkout/nginx.conf.sample;
       }
     }
 ---
@@ -80,7 +78,7 @@ spec:
       volumes:
       - name: code
         hostPath:
-          path: {{PWD}}/magento
+          path: {{PWD}}/sources
       - name: nginx-config-checkout-volume
         configMap:
           name: nginx-config-checkout
