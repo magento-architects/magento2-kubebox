@@ -8,7 +8,6 @@ spec:
     storage: 2Gi
   accessModes:
   - ReadWriteMany
-  persistentVolumeReclaimPolicy: Retain
   storageClassName: standard
   nfs:
     # The address 192.168.99.1 is the Minikube gateway to the host. This way
