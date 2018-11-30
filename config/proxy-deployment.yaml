@@ -11,6 +11,13 @@ spec:
   rules:
   - http:
       paths:
+## Monolith installation
+#      - path: /
+#        backend:
+#          serviceName: magento2
+#          servicePort: 80
+
+# Multi-service installation
       - path: /magento
         backend:
           serviceName: magento2

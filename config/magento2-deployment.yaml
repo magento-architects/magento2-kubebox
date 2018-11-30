@@ -82,12 +82,15 @@ spec:
           mountPath: /etc/nginx/nginx.conf
           subPath: nginx.conf
       volumes:
-#      - name: code
-#        persistentVolumeClaim:
-#          claimName: sources-volume-claim
+# NFS
       - name: code
-        hostPath:
-          path: {{PWD}}/sources
+        persistentVolumeClaim:
+          claimName: sources-volume-claim
+
+## Shared folders
+#      - name: code
+#        hostPath:
+#          path: {{PWD}}/sources
       - name: nginx-config-volume
         configMap:
           name: nginx-config

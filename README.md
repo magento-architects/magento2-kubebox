@@ -56,4 +56,21 @@ To install Magento, use next variables:
 | DB host | `magento2-mysql` |
 | DB user | `root` |
 | DB password | `1234` |
-| DB name | `mysql` |
+| DB name | `magento` |
+
+
+### Installation from CLI:
+`./bin/magento setup:install --db-host=magento2-mysql --db-name=magento --db-user=root  --db-password=1234 --backend-frontname=admin --base-url=http://192.168.99.100/ --language=en_US --timezone=America/Chicago --currency=USD --admin-lastname=Admin --admin-firstname=Admin --admin-email=admin@example.com --admin-user=admin --admin-password=123123q --cleanup-database --use-rewrites=1`
+
+Notes:
+1. `magento` DB must be created manually. Installation to the default `mysql` DB does not work.
+1. `base-url` may vary.
+1. Do not use `minikube service magento2` to open Magento instance because it uses port incompatible with current ingress configuration.
+
+
+## Login to containers
+
+1. Get list of available pods `kubectl get pods`
+2. Login to Magento container on magento2 pod `kubectl exec -it <magento2-pod> --container magento2 -- /bin/bash`
+2. Login to Nginx container on magento2 pod `kubectl exec -it <magento2-pod> --container nginx -- /bin/bash`
+2. Login to MySQL container on mysql pod `kubectl exec -it <mysql-pod> /bin/bash`
